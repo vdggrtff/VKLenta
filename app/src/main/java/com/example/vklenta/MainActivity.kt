@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,61 +27,18 @@ import com.example.vklenta.ui.theme.MainScreen
 import com.example.vklenta.ui.theme.VKLentaTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<MainViewModel>()
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             VKLentaTheme {
-                MainScreen()
+                MainScreen(viewModel)
 
         }
     }
 }
 }
-
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-private fun BottomAppBar() {
-    Scaffold(
-        bottomBar = {
-            BottomAppBar() {
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.Top  ) {
-                    Column {
-                        IconButton(onClick = { */
-/*TODO*//*
- }) {
-                            Icon(Icons.Filled.Menu, contentDescription = "Menu")
-                        }
-                        Text(text = "Favorite")
-                    }
-                    Column {
-                        IconButton(onClick = { */
-/*TODO*//*
- }) {
-                            Icon(Icons.Filled.Menu, contentDescription = "Menu")
-                        }
-                        Text(text = "Favorite")
-                    }
-                    Column {
-                        IconButton(onClick = { */
-/*TODO*//*
- }) {
-                            Icon(Icons.Filled.Menu, contentDescription = "Menu")
-                        }
-                        Text(text = "Favorite")
-                    }
-                }
-            }
-        }
-    ) {
-        Text(
-            modifier = Modifier.padding(it),
-            text = "Scaffold Text"
-        )
-    }
-}*/
