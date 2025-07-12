@@ -32,7 +32,6 @@ import com.example.vklenta.domain.StatisticType
 
 @Composable
 fun ProfileCard(
-    modifier: Modifier,
     feedPost: FeedPost,
     onLikeClickListener: (StatisticItem) -> Unit,
     onViewsClickListener: (StatisticItem) -> Unit,
@@ -40,9 +39,7 @@ fun ProfileCard(
     onCommentClickListener: (StatisticItem) -> Unit
 ) {
 
-    Card(
-        modifier = modifier.padding(8.dp)
-    ) {
+    Card {
         Column(modifier = Modifier.padding(all = 8.dp)) {
             PostHeader(feedPost)
             Text(

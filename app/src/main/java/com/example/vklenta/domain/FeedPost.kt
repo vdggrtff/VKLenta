@@ -3,6 +3,7 @@ package com.example.vklenta.domain
 import com.example.vklenta.R
 
 data class FeedPost (
+    val id: Int = 0,
     val communityName: String = "communityName",
     val publicationDate: String = "Time",
     val avatarResId: Int = R.drawable.post_comunity_thumbnail,
