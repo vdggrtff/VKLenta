@@ -1,17 +1,19 @@
 package com.example.vklenta
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.util.copy
 import com.example.vklenta.domain.FeedPost
 import com.example.vklenta.domain.StatisticItem
-import java.util.Collections.replaceAll
+import com.example.vklenta.ui.theme.NavigationItem
 
 class MainViewModel : ViewModel() {
 
     val sourceList = mutableListOf<FeedPost>().apply {
-        repeat(10){
+        repeat(10) {
             add(
                 FeedPost(id = it)
             )
@@ -25,7 +27,7 @@ class MainViewModel : ViewModel() {
         val oldPosts = feedPosts.value?.toMutableList() ?: mutableListOf()
         val oldStatistics = feedPost.statistics
         val newStatistics = oldStatistics.toMutableList().apply {
-            replaceAll { oldItem ->
+            replaceAll() { oldItem ->
                 if (oldItem.type == item.type) {
                     oldItem.copy(count = oldItem.count + 1)
                 } else {

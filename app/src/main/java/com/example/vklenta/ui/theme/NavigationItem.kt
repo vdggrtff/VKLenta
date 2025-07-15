@@ -1,33 +1,32 @@
 package com.example.vklenta.ui.theme
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.vklenta.R
+import com.example.vklenta.navigation.Screen
 
-sealed class BottomBarItem(
+sealed class NavigationItem(
+    val screen: Screen,
     val titleResId: Int,
     val icon: ImageVector
 ){
-    object Home: BottomBarItem(
+    object Home: NavigationItem(
+        screen = Screen.NewsFeed,
         titleResId = R.string.bottom_item_home,
         icon = Icons.Outlined.Home
     )
 
-    object Favorite: BottomBarItem(
+    object Favorite: NavigationItem(
+        screen = Screen.FavoriteFeed,
         titleResId = R.string.bottom_item_favorite,
         icon = Icons.Outlined.Favorite
     )
 
-    object Profile: BottomBarItem(
+    object Profile: NavigationItem(
+        screen = Screen.ProfileFeed,
         titleResId = R.string.bottom_item_profile,
         icon = Icons.Outlined.Person
     )
