@@ -40,7 +40,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun closeComments() {
-        _screenState.value = savedState
+        _screenState.value = savedState ?: initialState
     }
 
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
