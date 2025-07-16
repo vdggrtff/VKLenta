@@ -1,6 +1,6 @@
 package com.example.vklenta.ui.theme
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -14,6 +14,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.vklenta.MainViewModel
+import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.navigation.Screen
 
 @Composable
 fun HomeScreen(
@@ -21,14 +23,41 @@ fun HomeScreen(
     innerPadding: PaddingValues
 ) {
 
-    val feedPosts = viewModel.feedPosts.observeAsState(listOf())
+    val screenState = viewModel.screenState.observeAsState(HomeScreenState.Initial)
 
-    if (feedPosts.value.isNotEmpty()){
-        CommentsScreen(feedPosts.value.get(0))
+    when (val currentState = screenState.value){
+        is HomeScreenState.Posts -> {
+            FeedPosts(
+                viewModel = viewModel,
+                innerPadding = innerPadding,
+                posts = currentState.posts
+            )
+        }
+        is HomeScreenState.Comments -> {
+            CommentsScreen(
+                feedPost = currentState.feedPost,
+                comments = currentState.comments,
+                onBackPressed = {
+                    viewModel.closeComments()
+                }
+            )
+            BackHandler {
+                viewModel.closeComments()
+            }
+        }
+        is HomeScreenState.Initial -> {
+            
+        }
     }
+}
 
-
-    /*LazyColumn(
+@Composable
+fun FeedPosts(
+    viewModel: MainViewModel,
+    innerPadding: PaddingValues,
+    posts: List<FeedPost>
+){
+    LazyColumn(
         modifier = Modifier.padding(innerPadding),
         contentPadding = PaddingValues(
             top = 16.dp,
@@ -37,7 +66,7 @@ fun HomeScreen(
         ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(items = feedPosts.value, key = { it.id }) { feedPost ->
+        items(items = posts, key = { it.id }) { feedPost ->
 
             val dismissState = rememberSwipeToDismissBoxState(
                 confirmValueChange = {
@@ -63,10 +92,9 @@ fun HomeScreen(
                     feedPost = feedPost,
 
 
-                    *//*onViewsClickListener = {
-                        viewModel.updateCount(it)
-                    },*//*
-                    // или
+                    /*onViewsClickListener = {statisticItem ->
+                        viewModel.updateCount(feedPost = feedPost , item = statisticItem)
+                    },*/
                     onViewsClickListener = { statisticItem ->
                         viewModel.updateCount(
                             feedPost = feedPost,
@@ -85,14 +113,11 @@ fun HomeScreen(
                             item = statisticItem
                         )
                     },
-                    onCommentClickListener = { statisticItem ->
-                        viewModel.updateCount(
-                            feedPost = feedPost,
-                            item = statisticItem
-                        )
+                    onCommentClickListener = {
+                        viewModel.showComments(feedPost)
                     }
                 )
             }
         }
-    }*/
+    }
 }
