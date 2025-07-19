@@ -10,42 +10,37 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.vklenta.MainViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.vklenta.PostsViewModel
 import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.navigation.Screen
 
 @Composable
 fun HomeScreen(
-    viewModel: MainViewModel,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    onCommentClickListener: (FeedPost) -> Unit
 ) {
 
-    val screenState = viewModel.screenState.observeAsState(HomeScreenState.Initial)
+    val viewModel: PostsViewModel = viewModel()
+
+    val screenState = viewModel.screenState.observeAsState(LentaScreenState.Initial)
 
     when (val currentState = screenState.value){
-        is HomeScreenState.Posts -> {
+        is LentaScreenState.Posts -> {
             FeedPosts(
                 viewModel = viewModel,
                 innerPadding = innerPadding,
-                posts = currentState.posts
+                posts = currentState.posts,
+                onCommentClickListener = onCommentClickListener
             )
         }
-        is HomeScreenState.Comments -> {
-            CommentsScreen(
-                feedPost = currentState.feedPost,
-                comments = currentState.comments,
-                onBackPressed = {
-                    viewModel.closeComments()
-                }
-            )
-            BackHandler {
-                viewModel.closeComments()
-            }
-        }
-        is HomeScreenState.Initial -> {
+        is LentaScreenState.Initial -> {
             
         }
     }
@@ -53,9 +48,10 @@ fun HomeScreen(
 
 @Composable
 fun FeedPosts(
-    viewModel: MainViewModel,
+    viewModel: PostsViewModel,
     innerPadding: PaddingValues,
-    posts: List<FeedPost>
+    posts: List<FeedPost>,
+    onCommentClickListener: (FeedPost) -> Unit
 ){
     LazyColumn(
         modifier = Modifier.padding(innerPadding),
@@ -114,7 +110,7 @@ fun FeedPosts(
                         )
                     },
                     onCommentClickListener = {
-                        viewModel.showComments(feedPost)
+                        onCommentClickListener(feedPost)
                     }
                 )
             }

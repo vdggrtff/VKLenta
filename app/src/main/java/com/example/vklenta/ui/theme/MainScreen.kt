@@ -1,27 +1,19 @@
 package com.example.vklenta.ui.theme
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,19 +23,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.vklenta.MainViewModel
+import com.example.vklenta.PostsViewModel
+import com.example.vklenta.domain.FeedPost
 import com.example.vklenta.navigation.AppNavGraph
-import com.example.vklenta.navigation.NavigationState
 import com.example.vklenta.navigation.Screen
 import com.example.vklenta.navigation.rememberNavigationState
+import kotlin.collections.mutableListOf
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-fun MainScreen(viewModel: MainViewModel) {
+fun MainScreen() {
     val navigationState = rememberNavigationState()
+
 
     Scaffold(
         bottomBar = {
@@ -55,30 +47,37 @@ fun MainScreen(viewModel: MainViewModel) {
                 ) {
 
                     val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
-                    val currentRout = navBackStackEntry?.destination?.route
 
-                    val items =
-                        listOf(NavigationItem.Home, NavigationItem.Favorite, NavigationItem.Profile)
+                    val items = listOf(
+                        NavigationItem.Home,
+                        NavigationItem.Favorite,
+                        NavigationItem.Profile
+                    )
 
                     items.forEach { item ->
-                        val isSelected = currentRout == item.screen.route
-                        val contentColor =
-                            if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondary
+                        val selected = navBackStackEntry?.destination?.hierarchy?.any {
+                            it.route == item.screen.route
+                        } ?: false
+
                         NavigationBarItem(
-                            selected = currentRout == item.screen.route,
+                            selected = selected,
                             icon = {
                                 Icon(
                                     imageVector = item.icon, contentDescription = null,
-                                    tint = contentColor
+                                    tint = contentColor(selected)
                                 )
                             },
                             label = {
                                 Text(
                                     text = stringResource(id = item.titleResId),
-                                    color = contentColor
+                                    color = contentColor(selected)
                                 )
                             },
-                            onClick = { navigationState.navigateTo(route = item.screen.route) },
+                            onClick = {
+                                if (!selected) {
+                                    navigationState.navigateTo(route = item.screen.route)
+                                }
+                            },
                         )
                     }
                 }
@@ -87,7 +86,22 @@ fun MainScreen(viewModel: MainViewModel) {
     ) { innerPadding ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent = { HomeScreen(viewModel, innerPadding) },
+            lentaScreenContent = {
+                HomeScreen(
+                    innerPadding = innerPadding,
+                    onCommentClickListener = {
+                        navigationState.navigateToComments(it)
+                    }
+                )
+            },
+            commentsScreenContent = { feedPost ->
+                CommentsScreen(
+                    onBackPressed = {
+                        navigationState.navHostController.popBackStack()
+                    },
+                    feedPost = feedPost
+                )
+            },
             favoriteScreenContent = { TextCounter("Favorite") },
             profileScreenContent = { TextCounter("Profile") },
         )
@@ -108,5 +122,10 @@ private fun TextCounter(name: String) {
         text = "$name Count: $count",
         color = Color.Black
     )
+}
+
+@Composable
+private fun contentColor(isSelected: Boolean): Color {
+    return if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondary
 }
 

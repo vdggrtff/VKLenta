@@ -4,22 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.PostComment
 import com.example.vklenta.domain.StatisticItem
-import com.example.vklenta.ui.theme.HomeScreenState
-import com.example.vklenta.ui.theme.NavigationItem
+import com.example.vklenta.ui.theme.LentaScreenState
 
-class MainViewModel : ViewModel() {
-
-    private val comments = mutableListOf<PostComment>().apply {
-        repeat(10){
-            add(
-                PostComment(
-                    id = it
-                )
-            )
-        }
-    }
+class PostsViewModel : ViewModel() {
 
     private val sourceList = mutableListOf<FeedPost>().apply {
         repeat(10) {
@@ -28,24 +16,13 @@ class MainViewModel : ViewModel() {
             )
         }
     }
-    private val initialState = HomeScreenState.Posts(posts = sourceList)
-    private val _screenState = MutableLiveData<HomeScreenState>(initialState)
-    val screenState: LiveData<HomeScreenState> = _screenState
-
-    private var savedState: HomeScreenState? = initialState
-
-    fun showComments(feedPost: FeedPost){
-        savedState = _screenState.value
-        _screenState.value = HomeScreenState.Comments(feedPost = feedPost, comments = comments)
-    }
-
-    fun closeComments() {
-        _screenState.value = savedState ?: initialState
-    }
+    private val initialState = LentaScreenState.Posts(posts = sourceList)
+    private val _screenState = MutableLiveData<LentaScreenState>(initialState)
+    val screenState: LiveData<LentaScreenState> = _screenState
 
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
         val currentState = screenState.value
-        if (currentState !is HomeScreenState.Posts) return
+        if (currentState !is LentaScreenState.Posts) return
         val oldPosts = currentState.posts.toMutableList()
         val oldStatistics = feedPost.statistics
         val newStatistics = oldStatistics.toMutableList().apply {
@@ -67,14 +44,14 @@ class MainViewModel : ViewModel() {
                 }
             }
         }
-        _screenState.value = HomeScreenState.Posts(posts = newPosts)
+        _screenState.value = LentaScreenState.Posts(posts = newPosts)
     }
 
     fun deletePost(feedPost: FeedPost) {
         val currentState = screenState.value
-        if (currentState !is HomeScreenState.Posts) return
+        if (currentState !is LentaScreenState.Posts) return
         val oldPosts = currentState.posts.toMutableList()
         oldPosts.remove(feedPost)
-        _screenState.value = HomeScreenState.Posts(posts = oldPosts)
+        _screenState.value = LentaScreenState.Posts(posts = oldPosts)
     }
 }

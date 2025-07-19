@@ -59,4 +59,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.compose.runtime:runtime-livedata:1.8.3")
     implementation("androidx.navigation:navigation-compose:2.9.1")
+    implementation("com.google.code.gson:gson:2.13.1")
 }
