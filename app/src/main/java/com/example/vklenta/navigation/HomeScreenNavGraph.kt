@@ -8,6 +8,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.vklenta.domain.FeedPost
 import com.example.vklenta.ui.theme.FeedPosts
+import com.google.gson.Gson
 
 fun NavGraphBuilder.homeScreenNavGraph(
     lentaScreenContent: @Composable () -> Unit,
@@ -23,18 +24,13 @@ fun NavGraphBuilder.homeScreenNavGraph(
             composable(
                 route = Screen.Comments.route,
                 arguments = listOf(
-                    navArgument(Screen.KEY_FEED_POST_ID){
-                        type = NavType.IntType
-                    },
-                    navArgument(Screen.KEY_FEED_POST_DESCRIPTION){
-                        type = NavType.StringType
+                    navArgument(Screen.KEY_FEED_POST){
+                        type = FeedPost.NavigationType
                     }
                 )
             ) {
-                //надо крч comments/{feed_post_id}
-                val feedPostId = it.arguments?.getInt(Screen.KEY_FEED_POST_ID) ?: 0
-                val feedPostDescription = it.arguments?.getString(Screen.KEY_FEED_POST_DESCRIPTION) ?: ""
-                commentsScreenContent(FeedPost(id = feedPostId, contentText = feedPostDescription))
+                val feedPost = it.arguments?.getParcelable<FeedPost>(Screen.KEY_FEED_POST) ?: throw RuntimeException("Args is null")
+                commentsScreenContent(feedPost)
             }
         }
     )
