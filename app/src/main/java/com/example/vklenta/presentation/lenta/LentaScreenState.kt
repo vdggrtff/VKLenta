@@ -1,6 +1,6 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.presentation.lenta
 
-import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.presentation.comments.domain.FeedPost
 
 sealed class LentaScreenState {
 

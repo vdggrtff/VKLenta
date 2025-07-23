@@ -1,4 +1,4 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.presentation.main
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,10 +12,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -25,12 +23,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.vklenta.PostsViewModel
-import com.example.vklenta.domain.FeedPost
 import com.example.vklenta.navigation.AppNavGraph
-import com.example.vklenta.navigation.Screen
 import com.example.vklenta.navigation.rememberNavigationState
-import kotlin.collections.mutableListOf
+import com.example.vklenta.presentation.comments.CommentsScreen
+import com.example.vklenta.presentation.lenta.LentaScreen
+import com.example.vklenta.presentation.main.NavigationItem
 
 @Composable
 fun MainScreen() {
@@ -87,7 +84,7 @@ fun MainScreen() {
         AppNavGraph(
             navHostController = navigationState.navHostController,
             lentaScreenContent = {
-                HomeScreen(
+                LentaScreen(
                     innerPadding = innerPadding,
                     onCommentClickListener = {
                         navigationState.navigateToComments(it)

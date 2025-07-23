@@ -2,13 +2,10 @@ package com.example.vklenta.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.ui.theme.FeedPosts
-import com.google.gson.Gson
+import com.example.vklenta.presentation.comments.domain.FeedPost
 
 fun NavGraphBuilder.homeScreenNavGraph(
     lentaScreenContent: @Composable () -> Unit,

@@ -1,10 +1,9 @@
-package com.example.vklenta.domain
+package com.example.vklenta.presentation.comments.domain
 
 import android.os.Parcelable
 import androidx.navigation.NavType
 import androidx.savedstate.SavedState
 import com.example.vklenta.R
-import com.example.vklenta.ui.theme.FeedPosts
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 

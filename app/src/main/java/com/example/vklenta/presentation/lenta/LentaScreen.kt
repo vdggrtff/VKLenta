@@ -1,6 +1,5 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.presentation.lenta
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -10,19 +9,14 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.vklenta.PostsViewModel
-import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.presentation.comments.domain.FeedPost
 
 @Composable
-fun HomeScreen(
+fun LentaScreen(
     innerPadding: PaddingValues,
     onCommentClickListener: (FeedPost) -> Unit
 ) {
@@ -37,7 +31,10 @@ fun HomeScreen(
                 viewModel = viewModel,
                 innerPadding = innerPadding,
                 posts = currentState.posts,
-                onCommentClickListener = onCommentClickListener
+                onCommentClickListener = onCommentClickListener,
+                onDelete = {feedPost ->
+                    viewModel.deletePost(feedPost = feedPost)
+                }
             )
         }
         is LentaScreenState.Initial -> {
@@ -51,7 +48,8 @@ fun FeedPosts(
     viewModel: PostsViewModel,
     innerPadding: PaddingValues,
     posts: List<FeedPost>,
-    onCommentClickListener: (FeedPost) -> Unit
+    onCommentClickListener: (FeedPost) -> Unit,
+    onDelete: (FeedPost) -> Unit
 ){
     LazyColumn(
         modifier = Modifier.padding(innerPadding),
@@ -64,15 +62,17 @@ fun FeedPosts(
     ) {
         items(items = posts, key = { it.id }) { feedPost ->
 
+
             val dismissState = rememberSwipeToDismissBoxState(
-                confirmValueChange = {
-                    when (it) {
+                confirmValueChange = { dismissValue ->
+                    when (dismissValue) {
                         SwipeToDismissBoxValue.EndToStart -> {
-                            viewModel.deletePost(feedPost = feedPost)
+                            onDelete(feedPost)
                             true
                         }
+                        SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
                         else -> {
-                            false
+                            true
                         }
                     }
                 }
@@ -84,6 +84,8 @@ fun FeedPosts(
                 enableDismissFromStartToEnd = false,
                 backgroundContent = {}
             ) {
+
+
                 ProfileCard(
                     feedPost = feedPost,
 

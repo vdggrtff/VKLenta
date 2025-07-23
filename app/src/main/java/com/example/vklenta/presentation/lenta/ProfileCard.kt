@@ -1,4 +1,4 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.presentation.lenta
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -26,9 +26,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.vklenta.R
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.StatisticItem
-import com.example.vklenta.domain.StatisticType
+import com.example.vklenta.presentation.comments.domain.FeedPost
+import com.example.vklenta.presentation.comments.domain.StatisticItem
+import com.example.vklenta.presentation.comments.domain.StatisticType
 
 @Composable
 fun ProfileCard(

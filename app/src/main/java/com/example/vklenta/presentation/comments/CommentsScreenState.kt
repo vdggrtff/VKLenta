@@ -1,7 +1,7 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.presentation.comments
 
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.PostComment
+import com.example.vklenta.presentation.comments.domain.FeedPost
+import com.example.vklenta.presentation.comments.domain.PostComment
 
 sealed class CommentsScreenState {
 

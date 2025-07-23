@@ -1,4 +1,4 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.samples
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

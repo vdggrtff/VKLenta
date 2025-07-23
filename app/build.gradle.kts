@@ -1,8 +1,11 @@
+import com.android.build.gradle.tasks.PackagePrivacySandboxSdkBundle
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id ("kotlin-parcelize")
+    id("vkid.manifest.placeholders")
 }
 
 android {
@@ -62,4 +65,25 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.9.1")
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("io.coil-kt:coil-compose:2.7.0")
+
+    implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0")
+
+    /*val vkSdk = "2.5.0"
+
+    implementation("com.vk.id:vkid:$vkSdk")
+    implementation("com.vk.id:vk-sdk-support:2.5.0")
+    implementation("com.vk.id:onetap-compose:$vkSdk")
+    implementation("com.vk.id:multibranding-compose:${vkSdk}")
+    implementation("com.vk.id:onetap-common:${vkSdk}")
+    implementation("com.vk.id:group-subscription-compose:${vkSdk}")
+    implementation("com.vk.id:multibranding-common:${vkSdk}")
+    implementation("com.vk.id:group-subscription-common:${vkSdk}")
+    implementation("com.vk.id:multibranding-internal:${vkSdk}")
+    implementation("com.vk.id:analytics:${vkSdk}")
+    implementation("com.vk.id:network:${vkSdk}")
+    implementation("com.vk.id:tracking-tracer:${vkSdk}")
+    implementation("com.vk.id:logger:${vkSdk}")
+    implementation("om.vk.id:tracking-core:${vkSdk}")
+    implementation("com.vk.id:common:${vkSdk}")*/
 }

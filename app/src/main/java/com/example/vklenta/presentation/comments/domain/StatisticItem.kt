@@ -1,4 +1,4 @@
-package com.example.vklenta.domain
+package com.example.vklenta.presentation.comments.domain
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

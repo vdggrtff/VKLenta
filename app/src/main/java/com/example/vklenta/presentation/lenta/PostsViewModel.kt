@@ -1,11 +1,11 @@
-package com.example.vklenta
+package com.example.vklenta.presentation.lenta
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.StatisticItem
-import com.example.vklenta.ui.theme.LentaScreenState
+import com.example.vklenta.presentation.comments.domain.FeedPost
+import com.example.vklenta.presentation.comments.domain.StatisticItem
 
 class PostsViewModel : ViewModel() {
 
@@ -45,6 +45,7 @@ class PostsViewModel : ViewModel() {
             }
         }
         _screenState.value = LentaScreenState.Posts(posts = newPosts)
+        Log.d("dismissState", "Updating count for post with ID: ${feedPost.id}")
     }
 
     fun deletePost(feedPost: FeedPost) {

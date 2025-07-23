@@ -1,4 +1,4 @@
-package com.example.vklenta.domain
+package com.example.vklenta.presentation.comments.domain
 
 import com.example.vklenta.R
 

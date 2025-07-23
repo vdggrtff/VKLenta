@@ -1,4 +1,4 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.presentation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite

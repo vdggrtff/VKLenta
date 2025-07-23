@@ -1,6 +1,5 @@
-package com.example.vklenta.ui.theme
+package com.example.vklenta.presentation.comments
 
-import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,21 +24,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.room.util.copy
-import com.example.vklenta.CommentsViewModel
-import com.example.vklenta.CommentsViewModelFactory
 import com.example.vklenta.R
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.PostComment
-import java.nio.file.WatchEvent
+import com.example.vklenta.presentation.comments.domain.FeedPost
+import com.example.vklenta.presentation.comments.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
