@@ -34,6 +34,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -66,13 +67,17 @@ dependencies {
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("io.coil-kt:coil-compose:2.7.0")
 
-    implementation("com.vk:android-sdk-core:4.1.0")
-    implementation("com.vk:android-sdk-api:4.1.0")
+    /*implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0")*/
 
-    /*val vkSdk = "2.5.0"
+    val vkSdk = "2.5.0"
 
+    //implementation("com.vk:id-kotlin-sdk:1.0.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
     implementation("com.vk.id:vkid:$vkSdk")
-    implementation("com.vk.id:vk-sdk-support:2.5.0")
+    implementation("com.vk.id:onetap-compose:${vkSdk}")
+    //implementation("com.vk:androidsdk:2.5.0")
+   /* implementation("com.vk.id:vk-sdk-support:2.5.0")
     implementation("com.vk.id:onetap-compose:$vkSdk")
     implementation("com.vk.id:multibranding-compose:${vkSdk}")
     implementation("com.vk.id:onetap-common:${vkSdk}")
@@ -85,5 +90,6 @@ dependencies {
     implementation("com.vk.id:tracking-tracer:${vkSdk}")
     implementation("com.vk.id:logger:${vkSdk}")
     implementation("om.vk.id:tracking-core:${vkSdk}")
-    implementation("com.vk.id:common:${vkSdk}")*/
+    implementation("com.vk.id:common:${vkSdk}")
+    implementation("om.vk.id:tracking-core:2.5.0")*/
 }
