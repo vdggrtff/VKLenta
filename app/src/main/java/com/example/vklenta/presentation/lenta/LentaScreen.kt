@@ -13,7 +13,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.vklenta.presentation.comments.domain.FeedPost
+import com.example.vklenta.domain.FeedPost
 
 @Composable
 fun LentaScreen(

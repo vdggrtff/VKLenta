@@ -3,8 +3,8 @@ package com.example.vklenta.presentation.comments
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.vklenta.presentation.comments.domain.FeedPost
-import com.example.vklenta.presentation.comments.domain.PostComment
+import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.domain.PostComment
 
 class CommentsViewModel(feedPost: FeedPost): ViewModel() {
 

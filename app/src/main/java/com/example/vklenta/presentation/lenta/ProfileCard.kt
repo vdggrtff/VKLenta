@@ -26,9 +26,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.vklenta.R
-import com.example.vklenta.presentation.comments.domain.FeedPost
-import com.example.vklenta.presentation.comments.domain.StatisticItem
-import com.example.vklenta.presentation.comments.domain.StatisticType
+import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.domain.StatisticItem
+import com.example.vklenta.domain.StatisticType
 
 @Composable
 fun ProfileCard(
@@ -49,7 +49,7 @@ fun ProfileCard(
             Spacer(modifier = Modifier.height(8.dp))
             Image(
                 modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(feedPost.contentImageResId),
+                painter = painterResource(feedPost.contentImageUrl),
                 contentDescription = "Post",
                 contentScale = ContentScale.FillWidth
             )
@@ -73,7 +73,7 @@ private fun PostHeader(feedPost: FeedPost) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(feedPost.avatarResId),
+            painter = painterResource(feedPost.communityImageUrl),
             "Comment",
             modifier = Modifier
                 .size(50.dp)

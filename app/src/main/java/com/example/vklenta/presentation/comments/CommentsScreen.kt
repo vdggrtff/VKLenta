@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.vklenta.R
-import com.example.vklenta.presentation.comments.domain.FeedPost
-import com.example.vklenta.presentation.comments.domain.PostComment
+import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

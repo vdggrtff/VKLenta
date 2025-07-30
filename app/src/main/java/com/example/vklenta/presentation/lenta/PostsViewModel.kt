@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.vklenta.presentation.comments.domain.FeedPost
-import com.example.vklenta.presentation.comments.domain.StatisticItem
+import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.domain.StatisticItem
 
 class PostsViewModel : ViewModel() {
 
