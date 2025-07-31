@@ -4,21 +4,39 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.vklenta.data.mapper.NewsFeedMapper
+import com.example.vklenta.data.model.NewsFeedContentDto
+import com.example.vklenta.data.network.ApiFactory
+import com.example.vklenta.data.network.ApiService
 import com.example.vklenta.domain.FeedPost
 import com.example.vklenta.domain.StatisticItem
+import com.vk.id.VKID
+import kotlinx.coroutines.launch
 
 class PostsViewModel : ViewModel() {
 
-    private val sourceList = mutableListOf<FeedPost>().apply {
-        repeat(10) {
-            add(
-                FeedPost(id = it)
-            )
-        }
-    }
-    private val initialState = LentaScreenState.Posts(posts = sourceList)
+    private val initialState = LentaScreenState.Initial
     private val _screenState = MutableLiveData<LentaScreenState>(initialState)
     val screenState: LiveData<LentaScreenState> = _screenState
+
+    private val mapper = NewsFeedMapper()
+
+    init {
+        loadRecommendations()
+    }
+
+    private fun loadRecommendations(){
+        viewModelScope.launch {
+            val token = VKID.instance.accessToken?.token ?: run {
+                Log.d("loadRecommendations", "Нужен Вход")
+                return@launch
+            }
+            val response = ApiFactory.apiService.loadRecommendations(token)
+            val feedPosts = mapper.mapResponseToPosts(response)
+            _screenState.value = LentaScreenState.Posts(posts = feedPosts)
+        }
+    }
 
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
         val currentState = screenState.value

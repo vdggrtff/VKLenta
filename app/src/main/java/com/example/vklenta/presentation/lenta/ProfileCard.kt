@@ -1,5 +1,6 @@
 package com.example.vklenta.presentation.lenta
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.vklenta.R
 import com.example.vklenta.domain.FeedPost
 import com.example.vklenta.domain.StatisticItem
@@ -36,7 +38,7 @@ fun ProfileCard(
     onLikeClickListener: (StatisticItem) -> Unit,
     onViewsClickListener: (StatisticItem) -> Unit,
     onShareClickListener: (StatisticItem) -> Unit,
-    onCommentClickListener: (StatisticItem) -> Unit
+    onCommentClickListener: (StatisticItem) -> Unit,
 ) {
 
     Card {
@@ -47,12 +49,13 @@ fun ProfileCard(
                 color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Image(
+            AsyncImage(
+                model = feedPost.contentImageUrl,
                 modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(feedPost.contentImageUrl),
                 contentDescription = "Post",
                 contentScale = ContentScale.FillWidth
             )
+            Log.d("AsyncImage", "${feedPost.contentImageUrl}")
             Spacer(modifier = Modifier.height(8.dp))
             Statistics(
                 statistics = feedPost.statistics,
@@ -72,9 +75,9 @@ private fun PostHeader(feedPost: FeedPost) {
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(feedPost.communityImageUrl),
-            "Comment",
+        AsyncImage(
+            model = feedPost.communityImageUrl,
+            contentDescription = "Comment",
             modifier = Modifier
                 .size(50.dp)
                 .clip(shape = CircleShape)
@@ -109,7 +112,7 @@ private fun Statistics(
     onLikeClickListener: (StatisticItem) -> Unit,
     onViewsClickListener: (StatisticItem) -> Unit,
     onShareClickListener: (StatisticItem) -> Unit,
-    onCommentClickListener: (StatisticItem) -> Unit
+    onCommentClickListener: (StatisticItem) -> Unit,
 ) {
     Row {
         Row(modifier = Modifier.weight(1f)) {
@@ -162,7 +165,7 @@ private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticIte
 private fun IconWithText(
     iconResId: Int,
     text: String,
-    onItemClickListener: () -> Unit
+    onItemClickListener: () -> Unit,
 ) {
     Row(
         modifier = Modifier.clickable {

@@ -35,4 +35,6 @@ class NewsFeedMapper {
         }
         return result
     }
+
+
 }
