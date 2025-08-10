@@ -5,6 +5,12 @@ import com.example.vklenta.domain.FeedPost
 sealed class LentaScreenState {
 
     object Initial: LentaScreenState()
-    data class Posts(val posts: List<FeedPost>): LentaScreenState()
+
+    object Loading: LentaScreenState()
+
+    data class Posts(
+        val posts: List<FeedPost>,
+        val nextDataIsLoading: Boolean = false,
+    ): LentaScreenState()
 
 }

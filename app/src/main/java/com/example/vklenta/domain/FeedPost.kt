@@ -3,19 +3,20 @@ package com.example.vklenta.domain
 import android.os.Parcelable
 import androidx.navigation.NavType
 import androidx.savedstate.SavedState
-import com.example.vklenta.R
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FeedPost (
-    val id: String,
+    val id: Long,
+    val communityId: Long,
     val communityName: String,
     val publicationDate: String,
     val communityImageUrl: String,
     val contentText: String,
     val contentImageUrl: String?,
-    val statistics: List<StatisticItem>
+    val statistics: List<StatisticItem>,
+    val isLiked: Boolean,
 ): Parcelable{
 
     companion object{

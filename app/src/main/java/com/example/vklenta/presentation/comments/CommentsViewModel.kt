@@ -1,32 +1,32 @@
 package com.example.vklenta.presentation.comments
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.vklenta.data.repository.NewsfeedRepository
 import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.PostComment
+import kotlinx.coroutines.launch
 
-class CommentsViewModel(feedPost: FeedPost): ViewModel() {
+class CommentsViewModel(application: Application, feedPost: FeedPost) : ViewModel() {
 
     private val _screenState = MutableLiveData<CommentsScreenState>(CommentsScreenState.Initial)
     val screenState: LiveData<CommentsScreenState> = _screenState
+
+    private val repository = NewsfeedRepository(application)
 
     init {
         loadComments(feedPost)
     }
 
-    private fun loadComments(feedPost: FeedPost){
-        val comments = mutableListOf<PostComment>().apply {
-            repeat(10){
-                add(
-                    PostComment(
-                        id = it
-                    )
-                )
-            }
+    private fun loadComments(feedPost: FeedPost) {
+        viewModelScope.launch {
+            val comments = repository.getComments(feedPost)
+            _screenState.value = CommentsScreenState.Comments(
+                feedPost = feedPost,
+                comments = comments
+            )
         }
-        _screenState.value = CommentsScreenState.Comments(
-            feedPost = feedPost, comments = comments
-        )
     }
 }
