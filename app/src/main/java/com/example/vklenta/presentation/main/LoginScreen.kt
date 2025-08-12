@@ -71,10 +71,10 @@ fun LoginScreen(
             authParams = authParams,
             onAuth = { oAuth, accessToken ->
 
-                viewModel.onLoginSuccess(accessToken)
+                viewModel.checkAuthentification()
             },
             onFail = { _, _ ->
-                viewModel.onLoginFailed()
+                viewModel.checkAuthentification()
             },
             scenario = OneTapTitleScenario.SignIn,
             signInAnotherAccountButtonEnabled = true,

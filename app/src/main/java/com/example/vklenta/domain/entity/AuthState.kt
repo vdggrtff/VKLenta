@@ -1,4 +1,4 @@
-package com.example.vklenta.presentation.main
+package com.example.vklenta.domain.entity
 
 sealed class AuthState {
 

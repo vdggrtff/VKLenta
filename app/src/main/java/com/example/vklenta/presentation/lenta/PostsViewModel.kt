@@ -3,54 +3,78 @@ package com.example.vklenta.presentation.lenta
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.vklenta.data.repository.NewsfeedRepository
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.StatisticItem
-import kotlinx.coroutines.delay
+import com.example.vklenta.data.repository.NewsfeedRepositoryImpl
+import com.example.vklenta.domain.entity.FeedPost
+import com.example.vklenta.domain.usecase.ChangeLikeStatusUseCase
+import com.example.vklenta.domain.usecase.DeletePostUseCase
+import com.example.vklenta.domain.usecase.GetRecommendationsUseCase
+import com.example.vklenta.domain.usecase.LoadNextDataUseCase
+import com.example.vklenta.extensions.mergeWith
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class PostsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val initialState = LentaScreenState.Initial
-    private val _screenState = MutableLiveData<LentaScreenState>(initialState)
-    val screenState: LiveData<LentaScreenState> = _screenState
-
-    private val repository = NewsfeedRepository(application)
-
-    init {
-        _screenState.value = LentaScreenState.Loading
-        loadRecommendations()
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+        Log.d("PostsViewModel", "Exception caught by exception handler")
     }
+    private val repository = NewsfeedRepositoryImpl(application)
 
-    private fun loadRecommendations() {
+    private val getRecommendationsUseCase = GetRecommendationsUseCase(repository)
+    private val loadNextDataUseCase = LoadNextDataUseCase(repository)
+    private val changeLikeStatusUseCase = ChangeLikeStatusUseCase(repository)
+    private val deletePosUseCase = DeletePostUseCase(repository)
+
+    private val recommendationsFlow = getRecommendationsUseCase()
+    private val loadNextDataFlow = MutableSharedFlow<LentaScreenState>()
+
+
+    //или
+
+    //private val loadNextDataFlow = MutableSharedFlow<Unit>()
+    /*  private val loadNextDataFlow = flow {
+          loadNextDataEvents.collect {
+              emit(
+                  LentaScreenState.Posts(
+                      posts = recommendationsFlow.value,
+                      nextDataIsLoading = true,
+                  )
+              )
+          }
+      }*/
+    val screenState = recommendationsFlow
+        .filter { it.isNotEmpty() }
+        .map { LentaScreenState.Posts(posts = it) as LentaScreenState }
+        .onStart { emit(LentaScreenState.Loading) }
+        .mergeWith(loadNextDataFlow)
+
+
+    fun loadNextRecommendations() {
         viewModelScope.launch {
-            val feedPosts = repository.loadRecommendations()
-            _screenState.value = LentaScreenState.Posts(posts = feedPosts)
+            loadNextDataFlow.emit(
+                LentaScreenState.Posts(
+                    posts = recommendationsFlow.value,
+                    nextDataIsLoading = true,
+                )
+            )
+            loadNextDataUseCase()
         }
     }
 
-    fun loadNextRecommendations(){
-        _screenState.value = LentaScreenState.Posts(
-            posts = repository.feedPosts,
-            nextDataIsLoading = true
-        )
-       loadRecommendations()
-    }
-
-    fun deletePost(feedPost: FeedPost){
-        viewModelScope.launch {
-            repository.deletePost(feedPost)
-            _screenState.value = LentaScreenState.Posts(posts = repository.feedPosts)
+    fun deletePost(feedPost: FeedPost) {
+        viewModelScope.launch(exceptionHandler) {
+            deletePosUseCase(feedPost)
         }
     }
 
     fun changeLikeStatus(feedPost: FeedPost) {
-        viewModelScope.launch {
-            repository.changeLikeStatus(feedPost)
-            _screenState.value = LentaScreenState.Posts(posts = repository.feedPosts)
+        viewModelScope.launch(exceptionHandler) {
+            changeLikeStatusUseCase(feedPost)
         }
     }
 }

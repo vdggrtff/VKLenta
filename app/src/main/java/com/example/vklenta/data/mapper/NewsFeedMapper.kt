@@ -2,10 +2,10 @@ package com.example.vklenta.data.mapper
 
 import com.example.vklenta.data.model.CommentsResponseDto
 import com.example.vklenta.data.model.NewsFeedResponseDto
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.PostComment
-import com.example.vklenta.domain.StatisticItem
-import com.example.vklenta.domain.StatisticType
+import com.example.vklenta.domain.entity.FeedPost
+import com.example.vklenta.domain.entity.PostComment
+import com.example.vklenta.domain.entity.StatisticItem
+import com.example.vklenta.domain.entity.StatisticType
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

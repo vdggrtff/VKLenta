@@ -28,9 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.vklenta.R
-import com.example.vklenta.domain.FeedPost
-import com.example.vklenta.domain.StatisticItem
-import com.example.vklenta.domain.StatisticType
+import com.example.vklenta.domain.entity.FeedPost
+import com.example.vklenta.domain.entity.StatisticItem
+import com.example.vklenta.domain.entity.StatisticType
 import com.example.vklenta.ui.theme.DarkRed
 
 @Composable

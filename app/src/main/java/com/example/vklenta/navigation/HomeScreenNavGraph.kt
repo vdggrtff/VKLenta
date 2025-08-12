@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.domain.entity.FeedPost
 
 fun NavGraphBuilder.homeScreenNavGraph(
     lentaScreenContent: @Composable () -> Unit,

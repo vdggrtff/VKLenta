@@ -1,7 +1,7 @@
 package com.example.vklenta.navigation
 
 import android.net.Uri
-import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.domain.entity.FeedPost
 import com.google.gson.Gson
 
 sealed class Screen (

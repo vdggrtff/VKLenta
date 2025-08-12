@@ -5,13 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.vklenta.domain.entity.AuthState
 import com.example.vklenta.ui.theme.VKLentaTheme
-import com.vk.id.AccessToken
 import com.vk.id.VKID
-import com.vk.id.VKIDAuthFail
-import com.vk.id.auth.VKIDAuthCallback
 
 class MainActivity : ComponentActivity() {
 
@@ -26,7 +24,7 @@ class MainActivity : ComponentActivity() {
             VKLentaTheme {
 
                 val viewModel: MainViewModel = viewModel()
-                val authState = viewModel.authState.observeAsState(AuthState.Initial)
+                val authState = viewModel.authState.collectAsState(AuthState.Initial)
 
                 when(authState.value){
                     is AuthState.Authorized -> {

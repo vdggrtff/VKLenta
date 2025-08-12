@@ -14,20 +14,14 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.vklenta.domain.FeedPost
+import com.example.vklenta.domain.entity.FeedPost
 import com.example.vklenta.ui.theme.DarkBlue
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun LentaScreen(
@@ -37,7 +31,7 @@ fun LentaScreen(
 
     val viewModel: PostsViewModel = viewModel()
 
-    val screenState = viewModel.screenState.observeAsState(LentaScreenState.Initial)
+    val screenState = viewModel.screenState.collectAsState(LentaScreenState.Initial)
 
     when (val currentState = screenState.value) {
         is LentaScreenState.Posts -> {
