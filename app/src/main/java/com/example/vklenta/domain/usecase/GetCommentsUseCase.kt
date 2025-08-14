@@ -5,8 +5,9 @@ import com.example.vklenta.domain.entity.PostComment
 import com.example.vklenta.domain.repository.NewsfeedRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class GetCommentsUseCase(
+class GetCommentsUseCase @Inject constructor(
     private val repository: NewsfeedRepository,
 ) {
 

@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.vklenta.domain.entity.FeedPost
 import com.example.vklenta.ui.theme.DarkBlue
@@ -29,7 +30,7 @@ fun LentaScreen(
     onCommentClickListener: (FeedPost) -> Unit,
 ) {
 
-    val viewModel: PostsViewModel = viewModel()
+    val viewModel: PostsViewModel = hiltViewModel<PostsViewModel>()
 
     val screenState = viewModel.screenState.collectAsState(LentaScreenState.Initial)
 

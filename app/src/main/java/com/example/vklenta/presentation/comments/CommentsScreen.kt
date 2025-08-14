@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.vklenta.R
@@ -43,12 +44,13 @@ fun CommentsScreen(
     onBackPressed: () -> Unit,
     feedPost: FeedPost,
 ) {
-    val viewModel: CommentsViewModel = viewModel(
+    val viewModel: CommentsViewModel = hiltViewModel<CommentsViewModel>()
+    /*val viewModel: CommentsViewModel = viewModel(
         factory = CommentsViewModelFactory(
             feedPost = feedPost,
             LocalContext.current.applicationContext as Application
             )
-    )
+    )*/
     val screenState = viewModel.screenState.collectAsState(CommentsScreenState.Initial)
     val currentState = screenState.value
     if (currentState is CommentsScreenState.Comments) {

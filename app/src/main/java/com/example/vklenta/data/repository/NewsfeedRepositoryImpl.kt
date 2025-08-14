@@ -3,6 +3,7 @@ package com.example.vklenta.data.repository
 import android.app.Application
 import com.example.vklenta.data.mapper.NewsFeedMapper
 import com.example.vklenta.data.network.ApiFactory
+import com.example.vklenta.data.network.ApiService
 import com.example.vklenta.domain.entity.FeedPost
 import com.example.vklenta.domain.entity.PostComment
 import com.example.vklenta.domain.entity.StatisticItem
@@ -22,8 +23,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import java.lang.IllegalStateException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NewsfeedRepositoryImpl(application: Application): NewsfeedRepository {
+@Singleton
+class NewsfeedRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val mapper: NewsFeedMapper,
+
+    ) : NewsfeedRepository {
     private val token = VKID.instance.accessToken?.token
 
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -32,9 +40,6 @@ class NewsfeedRepositoryImpl(application: Application): NewsfeedRepository {
     private val refreshedListFlow = MutableSharedFlow<List<FeedPost>>()
 
     private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
-
-    private val apiService = ApiFactory.apiService
-    private val mapper = NewsFeedMapper()
 
     private val _feedPosts = mutableListOf<FeedPost>()
     private val feedPosts: List<FeedPost>
@@ -71,7 +76,8 @@ class NewsfeedRepositoryImpl(application: Application): NewsfeedRepository {
         checkAuthStateEvents.emit(Unit)
         checkAuthStateEvents.collect {
             val currentToken = VKID.instance.accessToken
-            val authState = if (currentToken != null) AuthState.Authorized else AuthState.NotAuthorized
+            val authState =
+                if (currentToken != null) AuthState.Authorized else AuthState.NotAuthorized
             emit(authState)
         }
     }.stateIn(
@@ -92,15 +98,15 @@ class NewsfeedRepositoryImpl(application: Application): NewsfeedRepository {
 
     override fun getRecommendations(): StateFlow<List<FeedPost>> = recommendations
 
-    override suspend fun loadNextData(){
+    override suspend fun loadNextData() {
         nextDataNeededEvents.emit(Unit)
     }
 
-    override suspend fun checkAuthState(){
+    override suspend fun checkAuthState() {
         checkAuthStateEvents.emit(Unit)
     }
 
-     override fun getComments(feedPost: FeedPost): StateFlow<List<PostComment>> = flow{
+    override fun getComments(feedPost: FeedPost): StateFlow<List<PostComment>> = flow {
         val comments = apiService.getComments(
             token = getAccessToken(),
             ownerId = feedPost.communityId,
@@ -109,12 +115,12 @@ class NewsfeedRepositoryImpl(application: Application): NewsfeedRepository {
         emit(mapper.mapResponseToComments(comments))
     }.retry {
         delay(RETRY_TIMEOUT_MILLIS)
-         true
-     }.stateIn(
-         scope = scope,
-         started = SharingStarted.Lazily,
-         initialValue = listOf()
-     )
+        true
+    }.stateIn(
+        scope = scope,
+        started = SharingStarted.Lazily,
+        initialValue = listOf()
+    )
 
     override suspend fun deletePost(feedPost: FeedPost) {
         apiService.deletePost(
@@ -157,7 +163,7 @@ class NewsfeedRepositoryImpl(application: Application): NewsfeedRepository {
         return token ?: throw IllegalStateException("Нужен Вход")
     }
 
-    companion object{
+    companion object {
         private const val RETRY_TIMEOUT_MILLIS = 3000L
     }
 }

@@ -1,8 +1,9 @@
 package com.example.vklenta.domain.usecase
 
 import com.example.vklenta.domain.repository.NewsfeedRepository
+import javax.inject.Inject
 
-class CheckAuthStateUseCase(
+class CheckAuthStateUseCase @Inject constructor(
     private val repository: NewsfeedRepository
 ) {
 
