@@ -12,6 +12,9 @@
 #   public *;
 #}
 
+# Google Crypto Tink
+-keep class com.google.crypto.tink.** { *; }
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
